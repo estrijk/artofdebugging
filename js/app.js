@@ -1,78 +1,79 @@
-const code = `st=>start: Start|past:>http://www.google.com[blank]
-e=>end: End:>http://www.google.com
-op1=>operation: My Operation|past:$dropOut
-op2=>operation: Stuff|current
-sub1=>subroutine: My Subroutine|invalid
-cond=>condition: Yes
-or No?|approved:>http://www.google.com
-c2=>condition: Good idea|rejected
-io=>inputoutput: catch something...|request
-para=>parallel: parallel tasks
+var code = `
+start=>start: Ik heb een probleem
+end=>end: End|future:>http://www.google.com
+op1=>condition: Heb je een foutmelding
+op2=>operation: Ga naar de aangeven regel?
+op3=>operation: Nee
+op4=>operation: Typ foutje?
+op5=>operation: Lees de code door. Logica fout?
+op6=>operation: Kopieer de foutmelding en zoek het op
+cond2=>condition: Hebben mensen hetzelfde probleem?
+op7=>operation: Nee
+op8=>operation: Kijk naar hun oplossing en probeer het
 
-st->op1(right)->cond
-cond(yes, right)->c2
-cond(no)->para
-c2(true)->io->e
-c2(false)->e
+start(right)->op1
+op1(yes)->op2->op4->op5->op6->cond2
+op1(no)->op3->end
+cond2(yes)->op8->end
+cond2(no)->end
 
-para(path1, bottom)->sub1(left)->op1
-para(path2, right)->op2->e`;
+`;
 
-var diagram = flowchart.parse(code);
-diagram.drawSVG("diagram");
+const diagram = flowchart.parse(code);
+let scale = 1;
+let maxWidth = 120;
 
-// you can also try to pass options:
+if(window.innerWidth < 650) {
+  throw(Error);
+} else if(window.innerWidth < 850) {
+  scale = 0.6;
+  maxWidth = 70;
+} else if(window.innerWidth < 1000) {
+  scale = 0.55;
+  maxWidth = 100;
+} else if(window.innerWidth < 1100) {
+  scale = 0.7;
+} else if(window.innerWidth < 1200) {
+  scale = 0.9;
+}
 
 diagram.drawSVG("diagram", {
   x: 0,
   y: 0,
   "line-width": 3,
-  "line-length": 50,
-  "text-margin": 10,
-  "font-size": 14,
+  "line-length": 16,
+  "font-size": 20,
   "font-color": "black",
   "line-color": "black",
   "element-color": "black",
   fill: "white",
-  "yes-text": "yes",
+  "yes-text": "no",
   "no-text": "no",
-  "arrow-end": "block",
-  scale: 1,
+  "arrow-end": "binnerWidthlock",
+  scale: scale,
+  "text-margin":20,
+  "maxWidth": maxWidth,
   // style symbol types
   symbols: {
     start: {
-      "font-color": "red",
-      "element-color": "green",
-      fill: "yellow",
+      "font-color": "",
+      "element-color": "",
+
     },
     end: {
       class: "end-element",
     },
+    condition: {
+        class: "end-element",
+        "font-color": "red",
+        
+
+      },
   },
   // even flowstate support ;-)
   flowstate: {
     past: { fill: "#CCCCCC", "font-size": 12 },
-    current: {
-      fill: "yellow",
-      "font-color": "red",
-      "font-weight": "bold",
-    },
-    future: { fill: "#FFFF99" },
-    request: { fill: "blue" },
-
-    invalid: { fill: "#444444" },
-    approved: {
-      fill: "#58C4A3",
-      "font-size": 12,
-      "yes-text": "APPROVED",
-      "no-text": "n/a",
-    },
-    rejected: {
-      fill: "#C45879",
-      "font-size": 12,
-      "yes-text": "n/a",
-      "no-text": "REJECTED",
-    },
+    condition: { fill: "#CCCCCC", "font-size": 12 },
   },
 });
 

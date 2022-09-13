@@ -19,7 +19,6 @@ nav {
           justify-content: space-between;
   padding: 5px 80px;
   color: white;
-  margin-bottom: 30px;
 }
 
 nav h2 {
@@ -31,6 +30,19 @@ nav a {
 }
 
 .content {
-  margin: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#diagram {
+  width: 80vw !important;
+}
+
+#explanation {
+  width: 50vw;
+  min-height: 100%;
+  padding-bottom: 15px;
+  background-color: grey;
 }
 /*# sourceMappingURL=style.css.map */
