@@ -41,8 +41,10 @@ nav a {
 
 #explanation {
   width: 50vw;
-  min-height: 100%;
+  min-height: 100vw;
   padding-bottom: 15px;
   background-color: grey;
+  color: white;
+  padding: 20px;
 }
 /*# sourceMappingURL=style.css.map */
